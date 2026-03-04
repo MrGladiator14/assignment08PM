@@ -1,0 +1,263 @@
+=== Test Case 1: Basic Mixed Transactions ===
+Testing: Normal credits/debits, high-value detection, category tracking
+
+Input transactions:
+1. ₹5000 credit (Food)
+2. ₹3000 debit (Travel)
+3. ₹15000 credit (Bills) - High Value
+4. ₹2000 debit (Food)
+5. ₹12000 debit (Travel) - High Value
+
+Running transaction analyzer...
+--- Paytm Backend Analytics Tool ---
+Enter 'done' to generate report.
+
+Enter amount (or 'done'): Enter type (credit/debit): Enter category (Food/Travel/Bills/Other): Transaction recorded: ₹5000.00 credit in Food
+
+Enter amount (or 'done'): Enter type (credit/debit): Enter category (Food/Travel/Bills/Other): Transaction recorded: ₹3000.00 debit in Travel
+
+Enter amount (or 'done'): Enter type (credit/debit): Enter category (Food/Travel/Bills/Other): Transaction recorded: ₹15000.00 credit in Bills
+
+Enter amount (or 'done'): Enter type (credit/debit): Enter category (Food/Travel/Bills/Other): Transaction recorded: ₹2000.00 debit in Food
+
+Enter amount (or 'done'): Enter type (credit/debit): Enter category (Food/Travel/Bills/Other): Transaction recorded: ₹12000.00 debit in Travel
+
+Enter amount (or 'done'): 
+==================================================
+PAYTM TRANSACTION ANALYSIS REPORT
+==================================================
+Total Transactions: 5
+Total Credits: ₹20000.00
+Total Debits: ₹17000.00
+Net Balance: ₹3000.00
+High-Value Transactions (>₹10,000): 2
+  - ₹15000.00 (credit) in Bills
+  - ₹12000.00 (debit) in Travel
+Highest Transaction: ₹15000.00 (credit) in Bills
+Average Transaction Value: ₹7400.00
+
+Category-wise Breakdown:
+  Food: ₹7000.00
+  Travel: ₹15000.00
+  Bills: ₹15000.00
+
+==================================================
+LAST 10 TRANSACTIONS VISUALIZATION
+==================================================
+ 1. ₹5000.00 credit Food   | *****
+ 2. ₹3000.00 debit  Travel | ***
+ 3. ₹15000.00 credit Bills  | ***************
+ 4. ₹2000.00 debit  Food   | **
+ 5. ₹12000.00 debit  Travel | ************
+
+==================================================
+Thank you for using Paytm Backend Analytics Tool!
+==================================================
+
+=== Expected Results ===
+Total Transactions: 5
+Total Credits: ₹20000.00
+Total Debits: ₹17000.00
+Net Balance: ₹3000.00
+High-Value Transactions: 2 (₹15000, ₹12000)
+Category Breakdown:
+  Food: ₹7000.00 (₹5000 credit - ₹2000 debit)
+  Travel: ₹15000.00 (₹12000 debit)
+  Bills: ₹15000.00 (₹15000 credit)
+  Other: ₹0.00
+=== Test Case 2: Input Validation and Error Handling ===
+Testing: Invalid amounts, invalid transaction types, invalid categories
+
+Input sequence with errors:
+1. 'abc' - Invalid amount (non-numeric)
+2. '-500' - Invalid amount (negative)
+3. '0' - Invalid amount (zero)
+4. '5000' - Valid amount
+5. 'credit' - Valid type
+6. 'InvalidCategory' - Invalid category
+7. 'Food' - Valid category
+8. '3000' - Valid amount
+9. 'invalid_type' - Invalid transaction type
+10. 'debit' - Valid type
+11. 'Travel' - Valid category
+12. 'done' - Exit
+
+Running transaction analyzer...
+--- Paytm Backend Analytics Tool ---
+Enter 'done' to generate report.
+
+Enter amount (or 'done'): Error: Please enter a valid numeric amount.
+Enter amount (or 'done'): Error: Amount must be positive. Please try again.
+Enter amount (or 'done'): Error: Amount must be positive. Please try again.
+Enter amount (or 'done'): Enter type (credit/debit): Enter category (Food/Travel/Bills/Other): Error: Category must be one of ['Food', 'Travel', 'Bills', 'Other']. Please try again.
+Enter category (Food/Travel/Bills/Other): Transaction recorded: ₹5000.00 credit in Food
+
+Enter amount (or 'done'): Enter type (credit/debit): Error: Type must be 'credit' or 'debit'. Please try again.
+Enter type (credit/debit): Enter category (Food/Travel/Bills/Other): Transaction recorded: ₹3000.00 debit in Travel
+
+Enter amount (or 'done'): 
+==================================================
+PAYTM TRANSACTION ANALYSIS REPORT
+==================================================
+Total Transactions: 2
+Total Credits: ₹5000.00
+Total Debits: ₹3000.00
+Net Balance: ₹2000.00
+High-Value Transactions (>₹10,000): None
+Highest Transaction: ₹5000.00 (credit) in Food
+Average Transaction Value: ₹4000.00
+
+Category-wise Breakdown:
+  Food: ₹5000.00
+  Travel: ₹3000.00
+
+==================================================
+LAST 10 TRANSACTIONS VISUALIZATION
+==================================================
+ 1. ₹5000.00 credit Food   | *****
+ 2. ₹3000.00 debit  Travel | ***
+
+==================================================
+Thank you for using Paytm Backend Analytics Tool!
+==================================================
+
+=== Expected Results ===
+Should show error messages for:
+- Non-numeric amount 'abc'
+- Negative amount '-500'
+- Zero amount '0'
+- Invalid category 'InvalidCategory'
+- Invalid transaction type 'invalid_type'
+Should successfully record:
+- ₹5000 credit in Food
+- ₹3000 debit in Travel
+Final totals: 2 transactions, ₹5000 credit, ₹3000 debit, ₹2000 net balance
+=== Test Case 3: Edge Cases and Visualization ===
+Testing: Empty dataset, single transaction, visualization with >10 transactions
+
+Part 1: Empty Dataset Test
+Input: 'done' immediately
+Running transaction analyzer...
+--- Paytm Backend Analytics Tool ---
+Enter 'done' to generate report.
+
+Enter amount (or 'done'): 
+==================================================
+PAYTM TRANSACTION ANALYSIS REPORT
+==================================================
+No transactions recorded.
+
+==================================================
+Thank you for using Paytm Backend Analytics Tool!
+==================================================
+
+Part 2: Single High-Value Transaction Test
+Input: ₹25000 credit in Bills
+Running transaction analyzer...
+--- Paytm Backend Analytics Tool ---
+Enter 'done' to generate report.
+
+Enter amount (or 'done'): Enter type (credit/debit): Enter category (Food/Travel/Bills/Other): Transaction recorded: ₹25000.00 credit in Bills
+
+Enter amount (or 'done'): 
+==================================================
+PAYTM TRANSACTION ANALYSIS REPORT
+==================================================
+Total Transactions: 1
+Total Credits: ₹25000.00
+Total Debits: ₹0.00
+Net Balance: ₹25000.00
+High-Value Transactions (>₹10,000): 1
+  - ₹25000.00 (credit) in Bills
+Highest Transaction: ₹25000.00 (credit) in Bills
+Average Transaction Value: ₹25000.00
+
+Category-wise Breakdown:
+  Bills: ₹25000.00
+
+==================================================
+LAST 10 TRANSACTIONS VISUALIZATION
+==================================================
+ 1. ₹25000.00 credit Bills  | *************************
+
+==================================================
+Thank you for using Paytm Backend Analytics Tool!
+==================================================
+
+Part 3: Visualization Test (12 transactions - should show last 10)
+Input: 12 transactions from ₹1000 to ₹12000
+Running transaction analyzer...
+--- Paytm Backend Analytics Tool ---
+Enter 'done' to generate report.
+
+Enter amount (or 'done'): Enter type (credit/debit): Enter category (Food/Travel/Bills/Other): Transaction recorded: ₹1000.00 credit in Food
+
+Enter amount (or 'done'): Enter type (credit/debit): Enter category (Food/Travel/Bills/Other): Transaction recorded: ₹2000.00 debit in Travel
+
+Enter amount (or 'done'): Enter type (credit/debit): Enter category (Food/Travel/Bills/Other): Transaction recorded: ₹3000.00 credit in Bills
+
+Enter amount (or 'done'): Enter type (credit/debit): Enter category (Food/Travel/Bills/Other): Transaction recorded: ₹4000.00 debit in Other
+
+Enter amount (or 'done'): Enter type (credit/debit): Enter category (Food/Travel/Bills/Other): Transaction recorded: ₹5000.00 credit in Food
+
+Enter amount (or 'done'): Enter type (credit/debit): Enter category (Food/Travel/Bills/Other): Transaction recorded: ₹6000.00 debit in Travel
+
+Enter amount (or 'done'): Enter type (credit/debit): Enter category (Food/Travel/Bills/Other): Transaction recorded: ₹7000.00 credit in Bills
+
+Enter amount (or 'done'): Enter type (credit/debit): Enter category (Food/Travel/Bills/Other): Transaction recorded: ₹8000.00 debit in Other
+
+Enter amount (or 'done'): Enter type (credit/debit): Enter category (Food/Travel/Bills/Other): Transaction recorded: ₹9000.00 credit in Food
+
+Enter amount (or 'done'): Enter type (credit/debit): Enter category (Food/Travel/Bills/Other): Transaction recorded: ₹10000.00 debit in Travel
+
+Enter amount (or 'done'): Enter type (credit/debit): Enter category (Food/Travel/Bills/Other): Transaction recorded: ₹11000.00 credit in Bills
+
+Enter amount (or 'done'): Enter type (credit/debit): Enter category (Food/Travel/Bills/Other): Transaction recorded: ₹12000.00 debit in Other
+
+Enter amount (or 'done'): 
+==================================================
+PAYTM TRANSACTION ANALYSIS REPORT
+==================================================
+Total Transactions: 12
+Total Credits: ₹36000.00
+Total Debits: ₹42000.00
+Net Balance: ₹-6000.00
+High-Value Transactions (>₹10,000): 2
+  - ₹11000.00 (credit) in Bills
+  - ₹12000.00 (debit) in Other
+Highest Transaction: ₹12000.00 (debit) in Other
+Average Transaction Value: ₹6500.00
+
+Category-wise Breakdown:
+  Food: ₹15000.00
+  Travel: ₹18000.00
+  Bills: ₹21000.00
+  Other: ₹24000.00
+
+==================================================
+LAST 10 TRANSACTIONS VISUALIZATION
+==================================================
+ 1. ₹3000.00 credit Bills  | ***
+ 2. ₹4000.00 debit  Other  | ****
+ 3. ₹5000.00 credit Food   | *****
+ 4. ₹6000.00 debit  Travel | ******
+ 5. ₹7000.00 credit Bills  | *******
+ 6. ₹8000.00 debit  Other  | ********
+ 7. ₹9000.00 credit Food   | *********
+ 8. ₹10000.00 debit  Travel | **********
+ 9. ₹11000.00 credit Bills  | ***********
+10. ₹12000.00 debit  Other  | ************
+
+==================================================
+Thank you for using Paytm Backend Analytics Tool!
+==================================================
+
+=== Expected Results ===
+Part 1: Should show 'No transactions recorded'
+Part 2: Should show 1 transaction, ₹25000 as highest and average
+Part 3: Should show:
+- 12 total transactions
+- Visualization of last 10 transactions (₹3000 to ₹12000)
+- Bar chart with asterisks representing ₹1000 each
+- Highest transaction: ₹12000
+- Average: ₹6500
