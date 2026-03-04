@@ -1,0 +1,19 @@
+Act as a Python Developer. Write a script that generates a symmetric diamond pattern using asterisks (*).
+
+Requirements:
+
+Input: Accept an integer n from the user representing the number of rows for the upper triangle (including the middle wide row).
+
+Logic: Use only nested for loops to handle spaces and symbols - strictly avoid string multiplication, string methods, or list comprehensions.
+
+Edge Cases: Handle n = 0 (output nothing or appropriate message) and n = 1 (single asterisk) gracefully with proper validation.
+
+Spacing & Symmetry: Ensure perfect left alignment with correct space calculation. Each row should have exactly (n - i) leading spaces for row i.
+
+Time Complexity: Implement with O(n²) time complexity using nested loops. Avoid unnecessary iterations or redundant calculations.
+
+Error Handling: Validate input is a positive integer, provide clear error messages for invalid inputs.
+
+Code Quality: Include comprehensive comments explaining the mathematical logic for space and star calculations in both upper and lower halves.
+
+Testing: Include examples showing output for n = 1, n = 3, and n = 5 to verify correctness.

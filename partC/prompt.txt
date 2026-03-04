@@ -1,0 +1,13 @@
+Act as a Python Developer. Write a script that generates a diamond pattern using asterisks (*).
+
+Requirements:
+
+Input: Accept an integer n from the user representing the number of rows for the upper triangle (including the middle wide row).
+
+Logic: Use only nested for loops to handle spaces and symbols.
+
+Constraint: Strictly avoid string multiplication (e.g., * * 5).
+
+Formatting: Ensure perfect symmetry with leading spaces.
+
+Code Quality: Include brief comments explaining the logic for the top and bottom halves.

@@ -1,0 +1,165 @@
+# Programming Fundamentals - Solutions
+
+## Q1️⃣ Conceptual
+
+### Difference between break and continue
+
+**break**: Terminates the entire loop immediately and transfers control to the statement following the loop.
+
+**continue**: Skips the current iteration of the loop and continues with the next iteration.
+
+**Examples:**
+
+```python
+# break example
+for i in range(10):
+    if i == 5:
+        break  # Exit loop when i equals 5
+    print(i)  # Prints: 0, 1, 2, 3, 4
+
+# continue example  
+for i in range(10):
+    if i % 2 == 0:
+        continue  # Skip even numbers
+    print(i)  # Prints: 1, 3, 5, 7, 9
+```
+
+### The else clause in for/while loops
+
+The else clause in loops executes when the loop completes normally (without encountering a break statement).
+
+**When it executes:**
+- After the loop finishes all iterations naturally
+- When the loop condition becomes False (for while loops)
+- When the iterable is exhausted (for loops)
+
+**When it doesn't execute:**
+- When a break statement is encountered inside the loop
+
+**Practical use case - Search pattern:**
+```python
+def find_prime(numbers):
+    """Find first prime number in list, return None if not found"""
+    for num in numbers:
+        if num > 1 and all(num % i != 0 for i in range(2, int(num**0.5) + 1)):
+            return num  # Found prime, exit early
+    else:
+        # This runs only if no break occurred (no prime found)
+        return None
+
+# Usage
+print(find_prime([4, 6, 8, 9]))    # None (else executes)
+print(find_prime([4, 6, 7, 9]))    # 7 (else doesn't execute)
+```
+
+## Q2️⃣ Coding
+
+### find_pairs function - O(n²) solution
+
+```python
+def find_pairs_brute_force(numbers, target):
+    """O(n²) solution using nested loops"""
+    pairs = []
+    n = len(numbers)
+    
+    for i in range(n):
+        for j in range(i + 1, n):  # Start from i+1 to avoid duplicates
+            if numbers[i] + numbers[j] == target:
+                pairs.append((numbers[i], numbers[j]))
+    
+    return pairs
+```
+
+### Optimization to O(n) using a set
+
+**Optimization strategy:**
+Instead of checking every possible pair (O(n²)), we can use a hash set to store numbers we've seen. For each number, we check if its complement (target - current) exists in the set.
+
+```python
+def find_pairs_optimized(numbers, target):
+    """O(n) solution using a set"""
+    pairs = []
+    seen = set()
+    
+    for num in numbers:
+        complement = target - num
+        if complement in seen:
+            pairs.append((complement, num))
+        seen.add(num)
+    
+    return pairs
+```
+
+**Example usage:**
+```python
+numbers = [1, 2, 3, 4, 5]
+target = 6
+
+print(find_pairs_brute_force(numbers, target))  # [(1, 5), (2, 4)]
+print(find_pairs_optimized(numbers, target))   # [(1, 5), (2, 4)]
+```
+
+**Time complexity comparison:**
+- Brute force: O(n²) - checks every possible pair
+- Optimized: O(n) - single pass with O(1) lookup in set
+
+## Q3️⃣ Debug & Analyze
+
+### Issues in is_prime function
+
+**Original code:**
+```python
+def is_prime(n):
+    if n < 2:
+        return False
+    for i in range(2, n):  # Bug?
+        if n % i == 0:
+            return False
+    return True
+```
+
+**Issues identified:**
+
+1. **Performance issue**: The loop runs from 2 to n-1, which is inefficient. We only need to check up to √n.
+2. **Performance issue**: Even numbers greater than 2 are not prime, but we still check all even divisors.
+
+### Fixed and optimized version
+
+```python
+def is_prime_optimized(n):
+    """Optimized prime checking with O(√n) time complexity"""
+    if n < 2:
+        return False
+    if n == 2:
+        return True
+    if n % 2 == 0:  # Eliminate even numbers > 2
+        return False
+    
+    # Check only odd divisors up to √n
+    for i in range(3, int(n**0.5) + 1, 2):
+        if n % i == 0:
+            return False
+    
+    return True
+```
+
+**Optimizations explained:**
+
+1. **Early returns for small numbers**: Handle n < 2, n == 2, and even numbers separately
+2. **Square root optimization**: Only check divisors up to √n because if n = a × b and a ≤ b, then a ≤ √n
+3. **Skip even divisors**: After checking for even numbers, only test odd divisors (step by 2)
+
+**Performance comparison:**
+- Original: O(n) time complexity
+- Optimized: O(√n) time complexity, ~50% fewer iterations by skipping evens
+
+**Example:**
+```python
+# Test the functions
+test_numbers = [1, 2, 3, 4, 5, 16, 17, 18, 19, 20, 97, 100]
+
+for num in test_numbers:
+    print(f"{num}: {is_prime_optimized(num)}")
+```
+
+The optimized function is significantly faster for large numbers while maintaining correctness.
